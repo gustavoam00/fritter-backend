@@ -26,7 +26,7 @@ const router = express.Router();
       freetValidator.isFreetExists
     ],
     async (req: Request, res: Response) => {
-      const freetVotes = await VotingCollection.allVotesforFreet(req.query.freet_id as string);
+      const freetVotes = await VotingCollection.allVotesforFreet(req.query.id as string);
       res.status(200).json(freetVotes);
     }
   );
@@ -51,7 +51,7 @@ const router = express.Router();
     async (req: Request, res: Response) => {
       const userId = (req.session.userId as string) ?? '';
       const type = req.body.type === "Upvote";
-      const vote = await VotingCollection.vote(userId, req.params.freetId, type);
+      const vote = await VotingCollection.vote(userId, req.params.id, type);
   
       res.status(201).json({
         message: 'Your vote was saved successfully.',
@@ -79,7 +79,7 @@ const router = express.Router();
       votingValidator.isValidVoteModifier,
     ],
     async (req: Request, res: Response) => {
-      await FreetCollection.deleteOne(req.params.voteId);
+      await FreetCollection.deleteOne(req.params.id);
       res.status(200).json({
         message: 'Your vote was deleted successfully.'
       });
