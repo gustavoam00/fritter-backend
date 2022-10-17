@@ -313,3 +313,179 @@ This renders the `index.html` file that will be used to interact with the backen
 **Throws**
 
 - `403` if the user is not logged in
+
+---
+
+#### `GET /api/votes?freetId=id` - Get votes by freet
+
+**Returns**
+
+- A count of upvotes and downvotes for freet with id `id`
+
+**Throws**
+
+- `404` if `id` is not a valid freet id
+
+#### `POST /api/votes` - Create a new vote
+
+**Body**
+
+- `type` radio button - whether its an upvote or downvote
+
+**Returns**
+
+- A success message
+- A object with the created vote
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` If the freet doesn't exist
+- `405` If the vote already exists
+
+#### `DELETE /api/votes/:id` - Delete an existing vote
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in
+- `403` if the user is not the author of the vote
+- `404` if the vote id is invalid
+
+#### `GET /api/reactions?freetId=id` - Get reactions by freet
+
+**Returns**
+
+- A list of reactions for freet with id `id`
+
+**Throws**
+
+- `404` if `id` is not a valid freet id
+
+#### `POST /api/reactions` - Create a new reaction
+
+**Body**
+
+- All possible reactions to select from
+
+**Returns**
+
+- A success message
+- A object with the created reaction
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` If the freet doesn't exist
+- `405` If the reaction already exists
+
+#### `DELETE /api/reactions/:id` - Delete an existing reactipn
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in
+- `403` if the user is not the author of the reaction
+- `404` if the reaction id is invalid
+
+#### `GET /api/groups` - Get groups of user
+
+**Returns**
+
+- A list of groups for current user
+
+#### `POST /api/groups` - Create a new group
+
+**Body**
+
+- `name` _{string}_ - The group's name
+- `users` _{Array<{string}>}_ - All users ot be included in the group
+
+**Returns**
+
+- A success message
+- A object with the created group
+
+**Throws**
+
+- `403` if the user is not logged in
+- `410` if group name already in use
+- `411` if one of users in the group doesnt exist
+
+#### `DELETE /api/groups>:groupId` - Delete a group with groupId
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if groupId is invalid
+- `403` if user is not owner of group
+
+#### `POST /api/anonymous/session` - Change to Anonymous mode
+
+**Returns**
+
+- A success message
+- An object with user's details (without password)
+
+**Throws**
+
+- `403` if user already in anonymous
+
+#### `DELETE /api/users/session` - Sign out user
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if user is not in anonymous
+
+#### `POST /api/timer` - turn timer on
+
+**body**
+
+- `limit` _{number}_ - how long the timer is set for
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `404` if timer already set
+
+#### `PUT /api/timer` - turn timer on
+
+**body**
+
+- `limit` _{number}_ - how long the timer is changed for 
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `404` if timer doesn't exist
+
+#### `DELETE /api/timer` - turn timer on
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `404` if timer doesn't exist
+

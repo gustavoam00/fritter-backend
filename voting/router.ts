@@ -17,7 +17,6 @@ const router = express.Router();
  * @name GET /api/votes?freetId=id
  *
  * @return {VoteResponse[]} - An array of votes for freet with id, freetId
- * @throws {400} - If freetId is not given
  * @throws {404} - If no freet has given freetId
  *
  */
@@ -35,7 +34,7 @@ const router = express.Router();
 /**
  * Upvote freet.
  *
- * @name POST /api/upvotes/ 
+ * @name POST /api/votes/ 
  *
  * @return {VoteResponse} - The created vote
  * @throws {403} - If the user is not logged in
@@ -65,7 +64,7 @@ const router = express.Router();
 /**
  * Delete a vote
  *
- * @name DELETE /api/vote/:id
+ * @name DELETE /api/votes/:id
  *
  * @return {string} - A success message
  * @throws {403} - If the user is not logged in or is not the author of
