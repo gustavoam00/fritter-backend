@@ -42,6 +42,9 @@ const formsAndHandlers = {
   'vote': vote,
   'delete-vote':deleteVote,
   'view-votes-by-freet': votesByFreet,
+  'react':react,
+  'delete-reaction':deleteReaction,
+  'view-reactions-by-freet':reactionsByFreet,
 };
 
 // Attach handlers to forms

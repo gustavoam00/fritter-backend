@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="/stylesheets/style.css">
   <script src="/scripts/freet.js"></script>
   <script src="/scripts/user.js"></script>
+  <script src="/scripts/vote.js"></script>
+  <script src="/scripts/reaction.js"></script>
   <script src="/scripts/index.js"></script>
 </head>
 
@@ -29,12 +31,12 @@
             <label for="password">Password:</label>
             <input id="password" name="password">
           </div>
-          <input type="submit" value="Create User">
+          <input type="submit" value="Create">
         </form>
 
         <form id="delete-user">
           <h3>Delete User</h3>
-          <input type="submit" value="Delete User">
+          <input type="submit" value="Delete">
         </form>
 
         <form id="change-username">
@@ -43,7 +45,7 @@
             <label for="username">New Username:</label>
             <input id="username" name="username">
           </div>
-          <input type="submit" value="Change Username">
+          <input type="submit" value="Save">
         </form>
 
         <form id="change-password">
@@ -52,7 +54,7 @@
             <label for="password">New Password:</label>
             <input id="password" name="password">
           </div>
-          <input type="submit" value="Change Password">
+          <input type="submit" value="Save">
         </form>
 
         <form id="sign-in">
@@ -75,7 +77,7 @@
 
         <form id="view-all-freets">
             <h3>View All Freets</h3>
-            <input type="submit" value="View All Freets">
+            <input type="submit" value="View">
           </form>
 
         <form id="view-freets-by-author">
@@ -84,7 +86,7 @@
             <label for="author">Author:</label>
             <input id="author" name="author">
           </div>
-          <input type="submit" value="View Freets By Author">
+          <input type="submit" value="View">
         </form>
 
         <form id="create-freet">
@@ -93,7 +95,7 @@
             <label for="content">Content:</label>
             <textarea id="content" name="content"></textarea>
           </div>
-          <input type="submit" value="Create Freet">
+          <input type="submit" value="Create">
         </form>
 
         <form id="edit-freet">
@@ -106,7 +108,7 @@
             <label for="content">Content:</label>
             <textarea id="content" name="content"></textarea>
           </div>
-          <input type="submit" value="Edit Freet">
+          <input type="submit" value="Edit">
         </form>
 
         <form id="delete-freet">
@@ -115,7 +117,7 @@
             <label for="id">ID:</label>
             <input id="id" name="id">
           </div>
-          <input type="submit" value="Delete Freet">
+          <input type="submit" value="Delete">
         </form>
 
         <form id="vote">
@@ -141,7 +143,7 @@
             <label for="id">ID:</label>
             <input id="id" name="id">
           </div>
-          <input type="submit" value="Delete Vote">
+          <input type="submit" value="Delete">
         </form>
 
         <form id="view-votes-by-freet">
@@ -150,9 +152,39 @@
             <label for="id">Freet ID:</label>
             <input id="id" name="id">
           </div>
-          <input type="submit" value="View Votes By Freet">
+          <input type="submit" value="View">
         </form>
 
+        <form id="react">
+          <h3>React to Freet</h3>
+          <div>
+            <label for="id">Freet ID:</label>
+            <input id="id" name="id">
+          </div>
+          <div>
+            <label for="type">Reaction Type:</label>
+            <input id="type" name="type">
+          </div>
+          <input type="submit" value="React">
+        </form>
+
+        <form id="delete-reaction">
+          <h3>Delete Reaction</h3>
+          <div>
+            <label for="id">ID:</label>
+            <input id="id" name="id">
+          </div>
+          <input type="submit" value="Delete">
+        </form>
+
+        <form id="view-reactions-by-freet">
+          <h3>View Reactions By Freet</h3>
+          <div>
+            <label for="id">Freet ID:</label>
+            <input id="id" name="id">
+          </div>
+          <input type="submit" value="View">
+        </form>
 
       </div>
     </section>

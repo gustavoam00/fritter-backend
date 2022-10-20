@@ -1,7 +1,6 @@
 import type {Types} from 'mongoose';
 import {Schema, model} from 'mongoose';
 
-
 export type Vote = {
   _id: Types.ObjectId; 
   authorId: Types.ObjectId;
@@ -9,7 +8,7 @@ export type Vote = {
   up: Boolean;
 };
 
-const VotingSchema = new Schema<Vote>({
+const VoteSchema = new Schema<Vote>({
   // The author userId
   authorId: {
     // Use Types.ObjectId outside of the schema
@@ -27,5 +26,5 @@ const VotingSchema = new Schema<Vote>({
   }
 });
 
-const VotingModel = model<Vote>('Voting', VotingSchema);
-export default VotingModel;
+const VoteModel = model<Vote>('Vote', VoteSchema);
+export default VoteModel;
