@@ -4,14 +4,14 @@ import type {User} from '../user/model';
 
 export type Group = {
   _id: Types.ObjectId; 
-  authorId: Types.ObjectId;
+  owner: Types.ObjectId;
   members: Set<User>;
   name: String;
 };
 
 const GroupSchema = new Schema<Group>({
   // The author userId
-  authorId: {
+  owner: {
     type: Schema.Types.ObjectId,
     required: true,
     ref: 'User'

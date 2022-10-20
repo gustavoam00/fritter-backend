@@ -23,18 +23,9 @@ class VoteCollection {
     }
 
     //What is populate?
-    static async allVotesforFreet(freetId: Types.ObjectId | string): Promise<Array<Number>> {
+    static async allVotesforFreet(freetId: Types.ObjectId | string): Promise<Array<Vote>> {
         const all = await VoteModel.find({freetId: freetId});//.populate('up');
-        let up = 0;
-        let down = 0;
-        for (let i = 0; i< all.length; i++){
-            if (all[i].up){
-                up++;
-            } else {
-                down++;
-            }
-        }
-        return [up, down]
+        return all;
     }
 }
 

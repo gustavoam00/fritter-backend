@@ -22,7 +22,7 @@ const router = express.Router();
       freetValidator.isFreetExists
     ],
     async (req: Request, res: Response) => {
-      const freetVotes = await VoteCollection.allVotesforFreet(req.query.id as string);
+      const freetVotes = await VoteCollection.allVotesforFreet(req.params.freetId);
       res.status(200).json(freetVotes);
     }
   );
@@ -35,20 +35,19 @@ const router = express.Router();
  * @return {VoteResponse} - The created vote
  * @throws {403} - If the user is not logged in
  * @throws {404} - If the freet does not exist
- * @throws {405} - If freet has already been voted by user
+ * @throws {403} - If freet has already been voted by user
  */
  router.post(
     '/:freetId?',
     [
       userValidator.isUserLoggedIn,
       freetValidator.isFreetExists,
-      voteValidator.isVoteExists,
+      voteValidator.isFreetVoted,
     ],
     async (req: Request, res: Response) => {
-      console.log("you got here");
       const userId = (req.session.userId as string) ?? '';
-      const type = req.body.type === "Upvote";
-      const vote = await VoteCollection.vote(userId, req.params.id, type);
+      //const type = req.??? === "Upvote";
+      const vote = await VoteCollection.vote(userId, req.params.freetId, true /*type*/);
   
       res.status(201).json({
         message: 'Your vote was saved successfully.',
@@ -76,7 +75,7 @@ const router = express.Router();
       voteValidator.isValidVoteModifier,
     ],
     async (req: Request, res: Response) => {
-      await VoteCollection.deleteVote(req.params.id);
+      await VoteCollection.deleteVote(req.params.voteId);
       res.status(200).json({
         message: 'Your vote was deleted successfully.'
       });

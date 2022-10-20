@@ -23,7 +23,7 @@ const isValidVoteModifier = async (req: Request, res: Response, next: NextFuncti
   const userId = vote.authorId._id;
   if (req.session.userId !== userId.toString()) {
     res.status(403).json({
-      error: 'Cannot modify other users\' f. votes'
+      error: 'Cannot modify other users\' votes'
     });
     return;
   }
@@ -32,13 +32,13 @@ const isValidVoteModifier = async (req: Request, res: Response, next: NextFuncti
 };
 
 const isFreetVoted = async (req: Request, res: Response, next: NextFunction) => {
-    if (VoteModel.find({authorId: req.session.userI, freetId: req.params.freetId})) {
-      res.status(403).json({
-        error: 'Cannot vote twice'
-      });
-      return;
-    }
-  
+  const result = await VoteModel.findOne({authorId: req.session.userId, freetId: req.params.freetId})
+  if (result) {
+    res.status(403).json({
+      error: 'Cannot vote twice'
+    });
+    return;
+  }
     next();
   };
 
