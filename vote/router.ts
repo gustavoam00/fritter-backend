@@ -10,14 +10,14 @@ const router = express.Router();
 /**
  * Get votes by freet.
  *
- * @name GET /api/votes/freetId
+ * @name GET /api/votes/:freetId
  *
  * @return {VoteResponse[]} - An array of votes for freet with id, freetId
  * @throws {404} - If no freet has given freetId
  *
  */
  router.get(
-    '/:freetId?',
+    '/:freetId',
     [
       freetValidator.isFreetExists
     ],
@@ -30,7 +30,7 @@ const router = express.Router();
 /**
  * Upvote freet.
  *
- * @name POST /api/votes/freetId
+ * @name POST /api/votes/:freetId
  *
  * @return {VoteResponse} - The created vote
  * @throws {403} - If the user is not logged in
@@ -38,7 +38,7 @@ const router = express.Router();
  * @throws {403} - If freet has already been voted by user
  */
  router.post(
-    '/:freetId?',
+    '/:freetId',
     [
       userValidator.isUserLoggedIn,
       freetValidator.isFreetExists,
@@ -46,8 +46,10 @@ const router = express.Router();
     ],
     async (req: Request, res: Response) => {
       const userId = (req.session.userId as string) ?? '';
-      //const type = req.??? === "Upvote";
-      const vote = await VoteCollection.vote(userId, req.params.freetId, true /*type*/);
+      console.log(req.body)
+      console.log(req.body.type)
+      const type = req.body.type === "upvote";
+      const vote = await VoteCollection.vote(userId, req.params.freetId, type);
   
       res.status(201).json({
         message: 'Your vote was saved successfully.',
@@ -60,7 +62,7 @@ const router = express.Router();
 /**
  * Delete a vote
  *
- * @name DELETE /api/votes/:id
+ * @name DELETE /api/votes/:voteId
  *
  * @return {string} - A success message
  * @throws {403} - If the user is not logged in or is not the author of
@@ -68,7 +70,7 @@ const router = express.Router();
  * @throws {404} - If the voteId is not valid
  */
  router.delete(
-    '/:voteId?',
+    '/:voteId',
     [
       userValidator.isUserLoggedIn,
       voteValidator.isVoteExists,

@@ -23,7 +23,7 @@ const isValidReactionModifier = async (req: Request, res: Response, next: NextFu
   const userId = reaction.authorId._id;
   if (req.session.userId !== userId.toString()) {
     res.status(403).json({
-      error: 'Cannot modify other users\' f. reactions'
+      error: 'Cannot modify other users\' reactions'
     });
     return;
   }
@@ -32,15 +32,15 @@ const isValidReactionModifier = async (req: Request, res: Response, next: NextFu
 };
 
 const isFreetReacted = async (req: Request, res: Response, next: NextFunction) => {
-    if (ReactionModel.find({authorId: req.session.userI, freetId: req.params.freetId})) {
-      res.status(405).json({
-        error: 'Cannot react twice'
-      });
-      return;
-    }
-  
+  const result = await ReactionModel.findOne({authorId: req.session.userId, freetId: req.params.freetId})
+  if (result) {
+    res.status(403).json({
+      error: 'Cannot react twice'
+    });
+    return;
+  }
     next();
-  };
+};;
 
 export {
   isReactionExists,

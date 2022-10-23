@@ -22,9 +22,8 @@ class VoteCollection {
         return VoteModel.findOne({_id: voteId}).populate('authorId');
     }
 
-    //What is populate?
     static async allVotesforFreet(freetId: Types.ObjectId | string): Promise<Array<Vote>> {
-        const all = await VoteModel.find({freetId: freetId});//.populate('up');
+        const all = await VoteModel.find({freetId: freetId});
         return all;
     }
 }

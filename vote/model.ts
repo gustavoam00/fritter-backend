@@ -9,9 +9,7 @@ export type Vote = {
 };
 
 const VoteSchema = new Schema<Vote>({
-  // The author userId
   authorId: {
-    // Use Types.ObjectId outside of the schema
     type: Schema.Types.ObjectId,
     required: true,
   },

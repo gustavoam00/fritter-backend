@@ -40,7 +40,7 @@ const isFreetVoted = async (req: Request, res: Response, next: NextFunction) => 
     return;
   }
     next();
-  };
+};
 
 export {
   isVoteExists,

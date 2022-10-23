@@ -1,5 +1,5 @@
 function react(fields) {
-    fetch(`/api/reaction/${fields.id}`, {method: 'POST'})
+    fetch(`/api/reaction/${fields.id}`, {method: 'POST', body: JSON.stringify(fields), headers: {'Content-Type': 'application/json'}})
       .then(showResponse)
       .catch(showResponse);
 }

@@ -1,5 +1,7 @@
+
 function vote(fields) {
-    fetch(`/api/vote/${fields.id}`, {method: 'POST'})
+  console.log(fields);
+    fetch(`/api/vote/${fields.id}`, {method: 'POST', body: JSON.stringify(fields), headers: {'Content-Type': 'application/json'}})
       .then(showResponse)
       .catch(showResponse);
 }
@@ -15,3 +17,12 @@ function votesByFreet(fields) {
       .then(showResponse)
       .catch(showResponse);
 }
+
+/** 
+function vote(fields) {
+  console.log(fields);
+    fetch(`/api/vote/${fields.id}?type=${fields.type}`, {method: 'POST'})
+      .then(showResponse)
+      .catch(showResponse);
+}
+*/

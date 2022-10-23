@@ -3,7 +3,7 @@ import type {Reaction} from './model';
 import ReactionModel from './model';
 
 class ReactionCollection {
-    static async reaction(authorId: Types.ObjectId | string, freetId: Types.ObjectId | string, emoji:String): Promise<HydratedDocument<Reaction>> {
+    static async react(authorId: Types.ObjectId | string, freetId: Types.ObjectId | string, emoji:String): Promise<HydratedDocument<Reaction>> {
         const vote = new ReactionModel({
             authorId,
             freetId, 

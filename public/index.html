@@ -128,9 +128,9 @@
           </div>
           <div>
             <center>
-            <input type="radio" id="up" name="type" value="Upvote">
+            <input type="radio" id="up" name="type" value="upvote">
             <label for="up">Upvote</label><br>
-            <input type="radio" id="down" name="type" value="Downvote">
+            <input type="radio" id="down" name="type" value="downvote">
             <label for="down">Downvote</label><br>
             </center>
           </div>
@@ -162,8 +162,13 @@
             <input id="id" name="id">
           </div>
           <div>
-            <label for="type">Reaction Type:</label>
-            <input id="type" name="type">
+            <select name="emoji" id="emoji">
+              <option value="heart">Heart</option>
+              <option value="thumbsUp">Thumbs Up</option>
+              <option value="laugh">Laugh</option>
+              <option value="angry">Angry</option>
+              <option value="cry">Cry</option>
+            </select>
           </div>
           <input type="submit" value="React">
         </form>
