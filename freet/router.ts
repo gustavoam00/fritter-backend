@@ -79,7 +79,7 @@ router.post(
 /**
  * Delete a freet
  *
- * @name DELETE /api/freets/:id
+ * @name DELETE /api/freets/:freetId
  *
  * @return {string} - A success message
  * @throws {403} - If the user is not logged in or is not the author of
@@ -87,7 +87,7 @@ router.post(
  * @throws {404} - If the freetId is not valid
  */
 router.delete(
-  '/:freetId?',
+  '/:freetId',
   [
     userValidator.isUserLoggedIn,
     freetValidator.isFreetExists,
@@ -104,7 +104,7 @@ router.delete(
 /**
  * Modify a freet
  *
- * @name PUT /api/freets/:id
+ * @name PUT /api/freets/:freetId
  *
  * @param {string} content - the new content for the freet
  * @return {FreetResponse} - the updated freet
@@ -115,7 +115,7 @@ router.delete(
  * @throws {413} - If the freet content is more than 140 characters long
  */
 router.put(
-  '/:freetId?',
+  '/:freetId',
   [
     userValidator.isUserLoggedIn,
     freetValidator.isFreetExists,

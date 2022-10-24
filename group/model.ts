@@ -5,7 +5,7 @@ import type {User} from '../user/model';
 export type Group = {
   _id: Types.ObjectId; 
   owner: Types.ObjectId;
-  members: Set<User>;
+  members: Array<String>;
   name: String;
 };
 
@@ -16,10 +16,10 @@ const GroupSchema = new Schema<Group>({
     required: true,
     ref: 'User'
   },
-  // Set of users in this group
+  // Array of users in this group
   members: {
-    type: Set<User>,
-    required: true
+    type: [String],
+    required: true,
   },
   //name of group
   name: {
@@ -28,5 +28,5 @@ const GroupSchema = new Schema<Group>({
   }
 });
 
-const GroupModel = model<Group>('Reaction', GroupSchema);
+const GroupModel = model<Group>('Group', GroupSchema);
 export default GroupModel;

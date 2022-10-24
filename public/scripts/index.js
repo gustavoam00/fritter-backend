@@ -45,6 +45,12 @@ const formsAndHandlers = {
   'react':react,
   'delete-reaction':deleteReaction,
   'view-reactions-by-freet':reactionsByFreet,
+  'create-group': createGroup,
+  'change-group-name': changeGroupName,
+  'delete-group': deleteGroup,
+  'view-all-groups': viewAllGroups,
+  'add-member':addMember,
+  'remove-member': removeMember,
 };
 
 // Attach handlers to forms
