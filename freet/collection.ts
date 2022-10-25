@@ -2,6 +2,7 @@ import type {HydratedDocument, Types} from 'mongoose';
 import type {Freet} from './model';
 import FreetModel from './model';
 import UserCollection from '../user/collection';
+import GroupCollection from '../group/collection';
 
 /**
  * This files contains a class that has the functionality to explore freets
@@ -19,13 +20,14 @@ class FreetCollection {
    * @param {string} content - The id of the content of the freet
    * @return {Promise<HydratedDocument<Freet>>} - The newly created freet
    */
-  static async addOne(authorId: Types.ObjectId | string, content: string): Promise<HydratedDocument<Freet>> {
+  static async addOne(authorId: Types.ObjectId | string, content: string, group:Types.ObjectId | undefined): Promise<HydratedDocument<Freet>> {
     const date = new Date();
     const freet = new FreetModel({
       authorId,
       dateCreated: date,
       content,
-      dateModified: date
+      dateModified: date,
+      group
     });
     await freet.save(); // Saves freet to MongoDB
     return freet.populate('authorId');
@@ -42,24 +44,42 @@ class FreetCollection {
   }
 
   /**
-   * Get all the freets in the database
+   * Get all the freets in the database that user has access to
    *
+   * @param {string} userId - The user's id
    * @return {Promise<HydratedDocument<Freet>[]>} - An array of all of the freets
    */
-  static async findAll(): Promise<Array<HydratedDocument<Freet>>> {
+  static async findAll(userId: Types.ObjectId | string): Promise<Array<HydratedDocument<Freet>>> {
     // Retrieves freets and sorts them from most to least recent
-    return FreetModel.find({}).sort({dateModified: -1}).populate('authorId');
+    let freets: Array<HydratedDocument<Freet>> = await FreetModel.find({group:undefined}).populate('authorId');
+    const other_freets: Array<HydratedDocument<Freet>> = await FreetModel.find({group :{$ne: undefined }}).populate('authorId');
+    for (const f of other_freets){
+      const group = await GroupCollection.findGroup(f.group);
+      if (group.owner.equals(userId) || group.members.includes(userId as string)){
+        freets.push(f);
+      }
+    }
+    return freets;
   }
 
   /**
-   * Get all the freets in by given author
+   * Get all the freets in by given author that user has access to
    *
+   * @param {string} userId - The user's id
    * @param {string} username - The username of author of the freets
    * @return {Promise<HydratedDocument<Freet>[]>} - An array of all of the freets
    */
-  static async findAllByUsername(username: string): Promise<Array<HydratedDocument<Freet>>> {
+  static async findAllByUsername(userId: Types.ObjectId | string, username: string): Promise<Array<HydratedDocument<Freet>>> {
     const author = await UserCollection.findOneByUsername(username);
-    return FreetModel.find({authorId: author._id}).populate('authorId');
+    let freets: Array<HydratedDocument<Freet>> = await FreetModel.find({group:undefined, authorId: author._id}).populate('authorId');
+    const other_freets: Array<HydratedDocument<Freet>> = await FreetModel.find({group :{$ne: undefined }, authorId: author._id}).populate('authorId');
+    for (const f of other_freets){
+      const group = await GroupCollection.findGroup(f.group);
+      if (group.owner.equals(userId) || group.members.includes(userId as string)){
+        freets.push(f);
+      }
+    }
+    return freets;
   }
 
   /**

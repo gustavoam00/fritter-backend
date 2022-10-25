@@ -1,8 +1,10 @@
 import type {NextFunction, Request, Response} from 'express';
 import express from 'express';
 import FreetCollection from './collection';
+import GroupCollection from '../group/collection';
 import * as userValidator from '../user/middleware';
 import * as freetValidator from '../freet/middleware';
+import * as groupValidator from '../group/middleware';
 import * as util from './util';
 
 const router = express.Router();
@@ -34,7 +36,7 @@ router.get(
       return;
     }
 
-    const allFreets = await FreetCollection.findAll();
+    const allFreets = await FreetCollection.findAll(req.session.userId);
     const response = allFreets.map(util.constructFreetResponse);
     res.status(200).json(response);
   },
@@ -42,16 +44,16 @@ router.get(
     userValidator.isAuthorExists
   ],
   async (req: Request, res: Response) => {
-    const authorFreets = await FreetCollection.findAllByUsername(req.query.author as string);
+    const authorFreets = await FreetCollection.findAllByUsername(req.session.userId, req.query.author as string);
     const response = authorFreets.map(util.constructFreetResponse);
     res.status(200).json(response);
   }
 );
 
 /**
- * Create a new freet.
+ * Create a new freet and post it to all or specific group
  *
- * @name POST /api/freets
+ * @name POST /api/freets/:groupName?
  *
  * @param {string} content - The content of the freet
  * @return {FreetResponse} - The created freet
@@ -60,20 +62,37 @@ router.get(
  * @throws {413} - If the freet content is more than 140 characters long
  */
 router.post(
-  '/',
+  '/:groupName?',
   [
     userValidator.isUserLoggedIn,
     freetValidator.isValidFreetContent
   ],
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response, next: NextFunction) => {
+    if (req.params.groupName !== undefined) {
+      next();
+      return;
+    }
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
-    const freet = await FreetCollection.addOne(userId, req.body.content);
+    const freet = await FreetCollection.addOne(userId, req.body.content, undefined);
 
     res.status(201).json({
-      message: 'Your freet was created successfully.',
+      message: 'Your freet was posted successfully.',
+      freet: util.constructFreetResponse(freet)
+    });
+  },
+  [
+    groupValidator.isGroupExistsName,
+  ],
+  async (req: Request, res: Response) => {
+    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    const group = await GroupCollection.findGroupByName(req.session.userId, req.params.groupName);
+    const freet = await FreetCollection.addOne(userId, req.body.content, group._id);
+    res.status(201).json({
+      message: `Your freet was posted successfully to ${req.params.groupName}.`,
       freet: util.constructFreetResponse(freet)
     });
   }
+
 );
 
 /**

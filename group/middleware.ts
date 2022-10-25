@@ -79,7 +79,8 @@ const isValidMember = async (req: Request, res: Response, next: NextFunction) =>
     return;
   }
   const group = await GroupCollection.findGroupByName(req.session.userId, req.params.groupName);
-  if (group.owner == req.session.userId){
+  if (group.owner.equals(req.params.memberId)){
+
     res.status(403).json({
       error: `Owner cannot be added to own group`
     });
