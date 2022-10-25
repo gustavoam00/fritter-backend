@@ -167,6 +167,7 @@ Mongoose allows you to use schema validation if you want to ensure that certain 
 
 within the schema. This tells us that the `content` field must have type `String`, and that it is required for documents in that collection. A freet must have a `String` type value for the `content` field to be added to the freets collection.
 
+
 ## API routes
 
 The following api routes have already been implemented for you (**Make sure to document all the routes that you have added.**):
@@ -179,20 +180,20 @@ This renders the `index.html` file that will be used to interact with the backen
 
 **Returns**
 
-- An array of all freets sorted in descending order by date modified
+- An array of all freets the user has access to
 
 #### `GET /api/freets?author=USERNAME` - Get freets by author
 
 **Returns**
 
-- An array of freets created by user with username `author`
+- An array of freets created by user with username `author` that user has access to
 
 **Throws**
 
 - `400` if `author` is not given
 - `404` if `author` is not a recognized username of any user
 
-#### `POST /api/freets` - Create a new freet
+#### `POST /api/freets/:groupName?` - Create a new freet that may or may not be posted to a specific group
 
 **Body**
 
@@ -208,8 +209,9 @@ This renders the `index.html` file that will be used to interact with the backen
 - `403` if the user is not logged in
 - `400` If the freet content is empty or a stream of empty spaces
 - `413` If the freet content is more than 140 characters long
+- `404` If the group name is not valid for user as owner
 
-#### `DELETE /api/freets/:freetId?` - Delete an existing freet
+#### `DELETE /api/freets/:freetId` - Delete an existing freet
 
 **Returns**
 
@@ -221,7 +223,7 @@ This renders the `index.html` file that will be used to interact with the backen
 - `403` if the user is not the author of the freet
 - `404` if the freetId is invalid
 
-#### `PUT /api/freets/:freetId?` - Update an existing freet
+#### `PUT /api/freets/:freetId` - Update an existing freet
 
 **Body**
 
@@ -268,7 +270,7 @@ This renders the `index.html` file that will be used to interact with the backen
 
 - `403` if user is not logged in
 
-#### `POST /api/users` - Create an new user account
+#### `POST /api/users` - Create an new user account and an anonymous account that it is paired with
 
 **Body**
 
@@ -288,7 +290,7 @@ This renders the `index.html` file that will be used to interact with the backen
 
 #### `PUT /api/users` - Update a user's profile
 
-**Body** _(no need to add fields that are not being changed)_
+**Body** 
 
 - `username` _{string}_ - The user's username
 - `password` _{string}_ - The user's password
@@ -314,36 +316,46 @@ This renders the `index.html` file that will be used to interact with the backen
 
 - `403` if the user is not logged in
 
----
-
-#### `GET /api/votes?freetId=id` - Get votes by freet
+#### `GET /api/users` - Get user info of logged in user
 
 **Returns**
 
-- A count of upvotes and downvotes for freet with id `id`
+- The user information
 
 **Throws**
 
-- `404` if `id` is not a valid freet id
+- `403` if user is not logged in
 
-#### `POST /api/votes` - Create a new vote
+---
+
+#### `GET /api/votes/:freetId` - Get votes by freet
+
+**Returns**
+
+- A list of votes for freet with 'freetId'
+
+**Throws**
+
+- `404` if freetid is not a valid freet _id
+
+#### `POST /api/votes/:freetId` - Create a new vote
 
 **Body**
 
-- `type` radio button - whether its an upvote or downvote
+- `type` _{string}_ radio button - whether its an upvote or downvote
 
 **Returns**
 
 - A success message
-- A object with the created vote
+- The created vote
 
 **Throws**
 
 - `403` if the user is not logged in
 - `404` If the freet doesn't exist
-- `405` If the vote already exists
+- `403` If the freet has already been voted by user
 
-#### `DELETE /api/votes/:id` - Delete an existing vote
+#### `DELETE /api/votes/:voteid` - Delete an existing vote
 
 **Returns**
 
@@ -355,34 +367,34 @@ This renders the `index.html` file that will be used to interact with the backen
 - `403` if the user is not the author of the vote
 - `404` if the vote id is invalid
 
-#### `GET /api/reactions?freetId=id` - Get reactions by freet
+#### `GET /api/reactions/:freetId` - Get reactions by freet
 
 **Returns**
 
-- A list of reactions for freet with id `id`
+- A list of reactions for freet with freetId
 
 **Throws**
 
-- `404` if `id` is not a valid freet id
+- `404` if freetId is not a valid freet _id
 
-#### `POST /api/reactions` - Create a new reaction
+#### `POST /api/reactions/:freetId` - Create a new reaction
 
 **Body**
 
-- All possible reactions to select from
+- `emoji` _{string}_ - All possible reactions to select from
 
 **Returns**
 
 - A success message
-- A object with the created reaction
+- The created reaction
 
 **Throws**
 
 - `403` if the user is not logged in
 - `404` If the freet doesn't exist
-- `405` If the reaction already exists
+- `403` If the freet was already reacted by user
 
-#### `DELETE /api/reactions/:id` - Delete an existing reactipn
+#### `DELETE /api/reactions/:reactionId` - Delete an existing reaction
 
 **Returns**
 
@@ -392,33 +404,31 @@ This renders the `index.html` file that will be used to interact with the backen
 
 - `403` if the user is not logged in
 - `403` if the user is not the author of the reaction
-- `404` if the reaction id is invalid
+- `404` if the reactionId not a valid reaction _id
 
 #### `GET /api/groups` - Get groups of user
 
 **Returns**
 
-- A list of groups for current user
+- A list of groups of the current user
 
-#### `POST /api/groups` - Create a new group
+**throws**
 
-**Body**
+- `403` if user not logged in
 
-- `name` _{string}_ - The group's name
-- `users` _{Array<{string}>}_ - All users ot be included in the group
+#### `POST /api/groups:groupName` - Create a new group
 
 **Returns**
 
 - A success message
-- A object with the created group
+- The created group with name groupName, no users, and owner the user currently logged in
 
 **Throws**
 
 - `403` if the user is not logged in
-- `410` if group name already in use
-- `411` if one of users in the group doesnt exist
+- `409` if group name already in use
 
-#### `DELETE /api/groups>:groupId` - Delete a group with groupId
+#### `DELETE /api/groups/:groupName` - Delete a group 
 
 **Returns**
 
@@ -427,21 +437,59 @@ This renders the `index.html` file that will be used to interact with the backen
 **Throws**
 
 - `403` if the user is not logged in
-- `404` if groupId is invalid
-- `403` if user is not owner of group
+- `404` if groupName is not a name of any group owned by logged in user
 
-#### `POST /api/anonymous/session` - Change to Anonymous mode
+#### `PUT /api/groups/:groupName` - Change the name of the group
+
+**Returns**
+
+- A sucess message
+- The updated group
+
+**throws**
+
+- `403` if user is not logged in
+- `404` if the groupName not a valid name for a group owned by logged in user
+
+#### `POST /api/groups/:groupName/members/:memberId` - Add user with _id memberId to group 
+
+**Returns**
+
+- A sucess message
+- The updated group
+
+**throws**
+
+- `403` if user is not logged in
+- `404` if the groupName not a valif name for a group owned by logged in user
+- `404` if no user with _id memberId exists
+- `403` if memberId already in group or its the user themselves
+
+#### `DELETE /api/groups/:groupName/members/:memberId` - Remove user with _id memberId from group 
+
+**Returns**
+
+- A sucess message
+- The updated group
+
+**throws**
+
+- `403` if user is not logged in
+- `404` if the groupName not a valif name for a group owned by logged in user
+- `404` if memberId not in group
+
+#### `POST /api/anon/session` - Change to Anonymous mode
 
 **Returns**
 
 - A success message
-- An object with user's details (without password)
 
 **Throws**
 
 - `403` if user already in anonymous
+- `403` if user not logged in
 
-#### `DELETE /api/users/session` - Sign out user
+#### `DELETE /api/anon/session` - Change out of Anonymous mode
 
 **Returns**
 
@@ -449,43 +497,5 @@ This renders the `index.html` file that will be used to interact with the backen
 
 **Throws**
 
+- `403` if the user is not logged in
 - `403` if user is not in anonymous
-
-#### `POST /api/timer` - turn timer on
-
-**body**
-
-- `limit` _{number}_ - how long the timer is set for
-
-**Returns**
-
-- A success message
-
-**Throws**
-
-- `404` if timer already set
-
-#### `PUT /api/timer` - turn timer on
-
-**body**
-
-- `limit` _{number}_ - how long the timer is changed for 
-
-**Returns**
-
-- A success message
-
-**Throws**
-
-- `404` if timer doesn't exist
-
-#### `DELETE /api/timer` - turn timer on
-
-**Returns**
-
-- A success message
-
-**Throws**
-
-- `404` if timer doesn't exist
-

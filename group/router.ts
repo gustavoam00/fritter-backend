@@ -37,7 +37,7 @@ router.post(
  *
  * @name PUT /api/groups/:groupName
  *
- * @return {string} - success message
+ * @return {string, Group} - success message and the updated group
  * @throws {403} - if the user is not logged in
  * @throws {404} - If the groupName is not valid
  */
@@ -52,6 +52,7 @@ router.post(
       await GroupCollection.changeName(group._id, req.body.new_name);
       res.status(200).json({
         message: 'The group name was successfully changed',
+        group: group,
       });
     }
 );
@@ -61,7 +62,7 @@ router.post(
  *
  * @name POST /api/groups/:groupName/members/:memberId
  *
- * @return {string} - success message
+ * @return {string, Group} - success message and updated group
  * @throws {403} - if the user is not logged in
  * @throws {404} - If the groupName is not valid
  * @throws {404} - if user doesnt exist
@@ -79,6 +80,7 @@ router.post(
       await GroupCollection.addMember(group._id, req.params.memberId)
       res.status(201).json({
         message: 'Group member succesfully added',
+        group: group
       });
     }
 );
@@ -88,7 +90,7 @@ router.post(
  *
  * @name DELETE /api/groups/:groupName/members/:memberId
  *
- * @return {string} - success message
+ * @return {string, Group} - success message and updated group
  * @throws {403} - if the user is not logged in
  * @throws {404} - If the groupName is not valid
  * @throws {404} - if memberId not in group
@@ -105,6 +107,7 @@ router.post(
       await GroupCollection.removeMember(group._id, req.params.memberId)
       res.status(200).json({
         message: 'Group member succesfully removed',
+        group: group
       });
     }
 );
@@ -138,7 +141,7 @@ router.post(
  *
  * @name GET /api/groups
  *
- * @return {GroupResponse[]} - A list of all the groups
+ * @return {Group[]} - A list of all the groups
  * @throws {403} - if the user is not logged in
  */
  router.get(

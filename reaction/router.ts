@@ -13,7 +13,7 @@ const router = express.Router();
  *
  * @name GET GET /api/reactions/:freetId
  *
- * @return {ReactionResponse[]} - An array of reactions for freet with id, freetId
+ * @return {Reaction[]} - An array of reactions for freet with id, freetId
  * @throws {404} - If no freet has given freetId
  *
  */
@@ -24,9 +24,7 @@ const router = express.Router();
     ],
     async (req: Request, res: Response) => {
       const freetReactions = await ReactionCollection.allReactionsforFreet(req.params.freetId);
-      res.status(200).json({
-        reactions: freetReactions
-      });
+      res.status(200).json(freetReactions);
     }
   );
 

@@ -12,7 +12,7 @@ const router = express.Router();
  *
  * @name GET /api/votes/:freetId
  *
- * @return {VoteResponse[]} - An array of votes for freet with id, freetId
+ * @return {Vote[]} - An array of votes for freet with id, freetId
  * @throws {404} - If no freet has given freetId
  *
  */
@@ -23,14 +23,12 @@ const router = express.Router();
     ],
     async (req: Request, res: Response) => {
       const freetVotes = await VoteCollection.allVotesforFreet(req.params.freetId);
-      res.status(200).json({
-          votes: freetVotes
-      });
+      res.status(200).json(freetVotes);
     }
   );
 
 /**
- * Upvote freet.
+ * Upvote/downvote a freet.
  *
  * @name POST /api/votes/:freetId
  *
@@ -48,11 +46,8 @@ const router = express.Router();
     ],
     async (req: Request, res: Response) => {
       const userId = (req.session.userId as string) ?? '';
-      console.log(req.body)
-      console.log(req.body.type)
       const type = req.body.type === "upvote";
       const vote = await VoteCollection.vote(userId, req.params.freetId, type);
-  
       res.status(201).json({
         message: 'Your vote was saved successfully.',
         vote: vote

@@ -14,8 +14,7 @@ const router = express.Router();
  *
  * @name GET /api/freets
  *
- * @return {FreetResponse[]} - A list of all the freets sorted in descending
- *                      order by date modified
+ * @return {FreetResponse[]} - A list of all the freets the user has access to
  */
 /**
  * Get freets by author.
@@ -60,6 +59,7 @@ router.get(
  * @throws {403} - If the user is not logged in
  * @throws {400} - If the freet content is empty or a stream of empty spaces
  * @throws {413} - If the freet content is more than 140 characters long
+ * @throws {404} - If group name is not valid for user as owner
  */
 router.post(
   '/:groupName?',
