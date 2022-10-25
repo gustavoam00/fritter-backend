@@ -25,6 +25,7 @@ const router = express.Router();
     ],
     async (req: Request, res: Response) => {
       const anon = await AnonCollection.findAnon(req.session.userId, false);
+      console.log(anon);
       req.session.userId = anon.anonAccount.toString();
       res.status(200).json({
         message: 'You have switched into Anonymous mode',

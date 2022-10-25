@@ -53,7 +53,7 @@ const formsAndHandlers = {
   'add-member':addMember,
   'remove-member': removeMember,
   'switch-to-anon': switchToAnon,
-  //'switch-form-anon': switchFromAnon,
+  'switch-from-anon': switchFromAnon,
   'show-user-info': showInfo,
 };
 

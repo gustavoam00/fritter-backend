@@ -21,11 +21,12 @@ class AnonCollection {
 
     static async findAnon(id: string, inAnon:boolean): Promise<HydratedDocument<Anon>>{
         if (inAnon){
-            return AnonModel.findOne({anonAccount: id});
-        } else{
-            return AnonModel.findOne({realAccount: id});
+            console.log("+")
+            return await AnonModel.findOne({anonAccount: id});
+        } else {
+            console.log("+")
+            return await AnonModel.findOne({realAccount: id});
         }
-        
     }
 }
 export default AnonCollection;
