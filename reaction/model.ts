@@ -15,6 +15,7 @@ const ReactionSchema = new Schema<Reaction>({
     type: Schema.Types.ObjectId,
     required: true
   },
+  //The freet this is a reaction to
   freetId: {
     type: Schema.Types.ObjectId,
     required: true

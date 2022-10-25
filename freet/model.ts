@@ -2,12 +2,6 @@ import type {Types, PopulatedDoc, Document} from 'mongoose';
 import {Schema, model} from 'mongoose';
 import type {User} from '../user/model';
 
-/**
- * This file defines the properties stored in a Freet
- * DO NOT implement operations here ---> use collection file
- */
-
-// Type definition for Freet on the backend
 export type Freet = {
   _id: Types.ObjectId;
   authorId: Types.ObjectId;
@@ -26,9 +20,6 @@ export type PopulatedFreet = {
   group: Types.ObjectId;
 };
 
-// Mongoose schema definition for interfacing with a MongoDB table
-// Freets stored in this table will have these fields, with the
-// type given by the type property, inside MongoDB
 const FreetSchema = new Schema<Freet>({
   // The author userId
   authorId: {
@@ -52,6 +43,7 @@ const FreetSchema = new Schema<Freet>({
     type: Date,
     required: true
   },
+  //the group this was freeted to, if any
   group:{
     type: Schema.Types.ObjectId,
     required: false

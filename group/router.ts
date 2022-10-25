@@ -1,7 +1,6 @@
 import type {Request, Response} from 'express';
 import express from 'express';
 import GroupCollection from './collection';
-import FreetCollection from '../freet/collection';
 import * as groupValidator from './middleware';
 import * as userValidator from '../user/middleware';
 

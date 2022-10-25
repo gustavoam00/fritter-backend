@@ -1,8 +1,10 @@
 import type {Request, Response, NextFunction} from 'express';
-
 import {Types} from 'mongoose';
 import UserCollection from '../user/collection';
 
+/**
+ * Checks if the current user is an anonymous user
+ */
 const isInAnon = async (req: Request, res: Response, next: NextFunction) => {
     const user = await UserCollection.findOneByUserId(req.session.userId);
     if (user.anon) {
@@ -14,6 +16,9 @@ const isInAnon = async (req: Request, res: Response, next: NextFunction) => {
     next();
 };
 
+/**
+ * Checks if the current user is not an anonymous user
+ */
 const isNotInAnon = async (req: Request, res: Response, next: NextFunction) => {
     const user = await UserCollection.findOneByUserId(req.session.userId);
     if (!user.anon) {

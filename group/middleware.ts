@@ -3,6 +3,9 @@ import {Types} from 'mongoose';
 import GroupCollection from './collection';
 import UserCollection from '../user/collection';
 
+/**
+ * Checks that the group with 'groupId' exists
+ */
 const isGroupExists = async (req: Request, res: Response, next: NextFunction) => {
     const validFormat = Types.ObjectId.isValid(req.params.groupId);
     const group = validFormat ? await GroupCollection.findGroup(req.params.groupId) : '';
@@ -18,6 +21,9 @@ const isGroupExists = async (req: Request, res: Response, next: NextFunction) =>
     next();
 };
 
+/**
+ * Checks that the group with 'groupName' owned by 'owner' exists
+ */
 const isGroupExistsName = async (req: Request, res: Response, next: NextFunction) => {
   const group =  await GroupCollection.findGroupByName(req.session.userId, req.params.groupName);
   if (!group) {
@@ -32,6 +38,9 @@ const isGroupExistsName = async (req: Request, res: Response, next: NextFunction
   next();
 };
 
+/**
+ * Checks that the user is the owner of group with 'groupId'
+ */
 const isValidGroupModifier = async (req: Request, res: Response, next: NextFunction) => {
     const group = await GroupCollection.findGroup(req.params.groupId);
     const userId = group.owner._id;
@@ -45,6 +54,9 @@ const isValidGroupModifier = async (req: Request, res: Response, next: NextFunct
     next();
 };
 
+/**
+ * Checks that the user doesn't already have a group with 'name'
+ */
 const isGroupNameNotInUse = async (req: Request, res: Response, next: NextFunction) => {
     const group = await GroupCollection.findGroupByName(req.session.userId, req.body.name);
     if (group) {
@@ -58,6 +70,9 @@ const isGroupNameNotInUse = async (req: Request, res: Response, next: NextFuncti
     next();
 };
 
+/**
+ * Checks that 'userId' not already a member of group wiht 'groupName'
+ */
 const isMemberNotInGroup = async (req: Request, res: Response, next: NextFunction) => {
   const group = await GroupCollection.findGroupByName(req.session.userId, req.params.groupName);
   if (!group.members.includes(req.params.memberId)){
@@ -69,7 +84,12 @@ const isMemberNotInGroup = async (req: Request, res: Response, next: NextFunctio
     next();
 };
 
-
+/**
+ * Checks that 'memberId' is a valid member to be added to group,
+ * they need to exist
+ * they cannot be the owner themselves,
+ * and they cannot be already be a member of the group
+ */
 const isValidMember = async (req: Request, res: Response, next: NextFunction) => {
   const user = await UserCollection.findOneByUserId(req.params.memberId);
   if (!user) {
@@ -94,7 +114,6 @@ const isValidMember = async (req: Request, res: Response, next: NextFunction) =>
   }
   next();
 };
-
 
 export {
     isGroupExists,

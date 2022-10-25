@@ -3,6 +3,9 @@ import {Types} from 'mongoose';
 import ReactionCollection from './collection';
 import ReactionModel from './model';
 
+/**
+ * Checks that reaction with 'reactionId' exists
+ */
 const isReactionExists = async (req: Request, res: Response, next: NextFunction) => {
   const validFormat = Types.ObjectId.isValid(req.params.reactionId);
   const reaction = validFormat ? await ReactionCollection.findOne(req.params.reactionId) : '';
@@ -18,6 +21,9 @@ const isReactionExists = async (req: Request, res: Response, next: NextFunction)
   next();
 };
 
+/**
+ * Checks if the user logged in is the author of reaction with 'reactionID'
+ */
 const isValidReactionModifier = async (req: Request, res: Response, next: NextFunction) => {
   const reaction = await ReactionCollection.findOne(req.params.reactionId);
   const userId = reaction.authorId._id;
@@ -31,6 +37,9 @@ const isValidReactionModifier = async (req: Request, res: Response, next: NextFu
   next();
 };
 
+/**
+ * Checks if the freet was already reacted to by user
+ */
 const isFreetReacted = async (req: Request, res: Response, next: NextFunction) => {
   const result = await ReactionModel.findOne({authorId: req.session.userId, freetId: req.params.freetId})
   if (result) {

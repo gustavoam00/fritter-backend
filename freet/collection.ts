@@ -4,20 +4,14 @@ import FreetModel from './model';
 import UserCollection from '../user/collection';
 import GroupCollection from '../group/collection';
 
-/**
- * This files contains a class that has the functionality to explore freets
- * stored in MongoDB, including adding, finding, updating, and deleting freets.
- * Feel free to add additional operations in this file.
- *
- * Note: HydratedDocument<Freet> is the output of the FreetModel() constructor,
- * and contains all the information in Freet. https://mongoosejs.com/docs/typescript.html
- */
+
 class FreetCollection {
   /**
    * Add a freet to the collection
    *
    * @param {string} authorId - The id of the author of the freet
    * @param {string} content - The id of the content of the freet
+   * @param {Types.ObjectId | undefined} - the froup this was freeted to if any
    * @return {Promise<HydratedDocument<Freet>>} - The newly created freet
    */
   static async addOne(authorId: Types.ObjectId | string, content: string, group:Types.ObjectId | undefined): Promise<HydratedDocument<Freet>> {

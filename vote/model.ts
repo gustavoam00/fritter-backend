@@ -9,10 +9,12 @@ export type Vote = {
 };
 
 const VoteSchema = new Schema<Vote>({
+  //the author's user id
   authorId: {
     type: Schema.Types.ObjectId,
     required: true,
   },
+  //the freet this is a vote to
   freetId: {
     type: Schema.Types.ObjectId,
     required: true,

@@ -3,6 +3,9 @@ import {Types} from 'mongoose';
 import VoteCollection from './collection';
 import VoteModel from './model';
 
+/**
+ * checks that vote with 'voteId' exists
+ */
 const isVoteExists = async (req: Request, res: Response, next: NextFunction) => {
   const validFormat = Types.ObjectId.isValid(req.params.voteId);
   const vote = validFormat ? await VoteCollection.findOne(req.params.voteId) : '';
@@ -18,6 +21,9 @@ const isVoteExists = async (req: Request, res: Response, next: NextFunction) => 
   next();
 };
 
+/**
+ * Checks that user logged in is author of vote with 'voteId'
+ */
 const isValidVoteModifier = async (req: Request, res: Response, next: NextFunction) => {
   const vote = await VoteCollection.findOne(req.params.voteId);
   const userId = vote.authorId._id;
@@ -31,6 +37,9 @@ const isValidVoteModifier = async (req: Request, res: Response, next: NextFuncti
   next();
 };
 
+/**
+ * Checks if freet was already voted by user
+ */
 const isFreetVoted = async (req: Request, res: Response, next: NextFunction) => {
   const result = await VoteModel.findOne({authorId: req.session.userId, freetId: req.params.freetId})
   if (result) {
