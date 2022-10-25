@@ -23,7 +23,9 @@ const router = express.Router();
     ],
     async (req: Request, res: Response) => {
       const freetVotes = await VoteCollection.allVotesforFreet(req.params.freetId);
-      res.status(200).json(freetVotes);
+      res.status(200).json({
+          votes: freetVotes
+      });
     }
   );
 

@@ -164,7 +164,7 @@ router.delete(
     userValidator.isUserLoggedIn
   ],
   async (req: Request, res: Response) => {
-    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    const userId = (req.session.userId as string) ?? '';
     const user = await UserCollection.findOneByUserId(userId)
     res.status(200).json({
       user: user

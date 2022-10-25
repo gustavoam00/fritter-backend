@@ -11,7 +11,7 @@ const router = express.Router();
 /**
  * Get reactions by freet.
  *
- * @name GET GET /api/freetId
+ * @name GET GET /api/reactions/:freetId
  *
  * @return {ReactionResponse[]} - An array of reactions for freet with id, freetId
  * @throws {404} - If no freet has given freetId
@@ -24,14 +24,16 @@ const router = express.Router();
     ],
     async (req: Request, res: Response) => {
       const freetReactions = await ReactionCollection.allReactionsforFreet(req.params.freetId);
-      res.status(200).json(freetReactions);
+      res.status(200).json({
+        reactions: freetReactions
+      });
     }
   );
 
 /**
  * React to a freet.
  *
- * @name POST /api/reaction/freetId
+ * @name POST /api/reactions/:freetId
  *
  * @return {ReactionResponse} - The created reaction
  * @throws {403} - If the user is not logged in
@@ -61,7 +63,7 @@ const router = express.Router();
 /**
  * Delete a reaction
  *
- * @name DELETE /api/reaction/reactionId
+ * @name DELETE /api/reactions/:reactionId
  *
  * @return {string} - A success message
  * @throws {403} - If the user is not logged in or is not the author of the reaction 

@@ -51,7 +51,7 @@ router.post(
       const group = await GroupCollection.findGroupByName(req.session.userId, req.params.groupName);
       await GroupCollection.changeName(group._id, req.body.new_name);
       res.status(200).json({
-        message: 'The Group Name was successfully changed',
+        message: 'The group name was successfully changed',
       });
     }
 );
@@ -77,7 +77,7 @@ router.post(
     async (req: Request, res: Response) => {
       const group = await GroupCollection.findGroupByName(req.session.userId, req.params.groupName);
       await GroupCollection.addMember(group._id, req.params.memberId)
-      res.status(200).json({
+      res.status(201).json({
         message: 'Group member succesfully added',
       });
     }
@@ -128,13 +128,13 @@ router.post(
       const group = await GroupCollection.findGroupByName(req.session.userId, req.params.groupName);
       await GroupCollection.deleteGroup(group._id);
       res.status(200).json({
-        message: 'The Group was deleted successfully',
+        message: 'The group was deleted successfully',
       });
     }
 );
 
 /**
- * Get all of users Groups
+ * Get all of user's groups
  *
  * @name GET /api/groups
  *
