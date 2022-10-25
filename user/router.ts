@@ -2,6 +2,7 @@ import type {Request, Response} from 'express';
 import express from 'express';
 import FreetCollection from '../freet/collection';
 import UserCollection from './collection';
+import AnonCollection from '../anon/collection';
 import * as userValidator from '../user/middleware';
 import * as util from './util';
 
@@ -85,8 +86,9 @@ router.post(
     userValidator.isValidPassword
   ],
   async (req: Request, res: Response) => {
-    const user = await UserCollection.addOne(req.body.username, req.body.password);
+    const user = await UserCollection.addOne(req.body.username, req.body.password, false);
     req.session.userId = user._id.toString();
+    await AnonCollection.createAnon(user._id, req.body.password);
     res.status(201).json({
       message: `Your account was created successfully. You have been logged in as ${user.username}`,
       user: util.constructUserResponse(user)
@@ -144,6 +146,28 @@ router.delete(
     req.session.userId = undefined;
     res.status(200).json({
       message: 'Your account has been deleted successfully.'
+    });
+  }
+);
+
+/**
+ * Show User Info
+ *
+ * @name GET /api/users
+ *
+ * @return {UserResponse} - The user info of logged in user
+ * @throws {403} - If the user is not logged in
+ */
+ router.get(
+  '/',
+  [
+    userValidator.isUserLoggedIn
+  ],
+  async (req: Request, res: Response) => {
+    const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    const user = await UserCollection.findOneByUserId(userId)
+    res.status(200).json({
+      user: user
     });
   }
 );

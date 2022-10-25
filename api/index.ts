@@ -14,6 +14,7 @@ import {freetRouter} from '../freet/router';
 import {voteRouter} from '../vote/router';
 import {reactionRouter} from '../reaction/router';
 import {groupRouter} from '../group/router';
+import {anonRouter} from '../anon/router';
 
 // Load environmental variables
 dotenv.config({});
@@ -82,6 +83,7 @@ app.use('/api/freets', freetRouter);
 app.use('/api/votes', voteRouter);
 app.use('/api/reactions', reactionRouter);
 app.use('/api/groups', groupRouter);
+app.use('/api/anon', anonRouter);
 
 // Catch all the other routes and display error message
 app.all('*', (req: Request, res: Response) => {

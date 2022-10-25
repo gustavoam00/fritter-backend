@@ -38,3 +38,9 @@ function signOut() {
     .then(showResponse)
     .catch(showResponse);
 }
+
+function showInfo(){
+  fetch('/api/users', {method: 'GET'})
+    .then(showResponse)
+    .catch(showResponse);
+}

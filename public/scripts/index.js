@@ -52,6 +52,9 @@ const formsAndHandlers = {
   'view-all-groups': viewAllGroups,
   'add-member':addMember,
   'remove-member': removeMember,
+  'switch-to-anon': switchToAnon,
+  //'switch-form-anon': switchFromAnon,
+  'show-user-info': showInfo,
 };
 
 // Attach handlers to forms

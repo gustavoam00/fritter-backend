@@ -12,6 +12,7 @@ export type User = {
   username: string;
   password: string;
   dateJoined: Date;
+  anon: Boolean;
 };
 
 // Mongoose schema definition for interfacing with a MongoDB table
@@ -32,6 +33,11 @@ const UserSchema = new Schema({
   dateJoined: {
     type: Date,
     required: true
+  },
+  //Whether or not this User is an Anon account
+  anon: {
+    type: Boolean,
+    required:true
   }
 });
 
