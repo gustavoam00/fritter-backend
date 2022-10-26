@@ -48,8 +48,9 @@ router.post(
       groupValidator.isGroupExistsName,
     ],
     async (req: Request, res: Response) => {
-      const group = await GroupCollection.findGroupByName(req.session.userId, req.params.groupName);
+      let group = await GroupCollection.findGroupByName(req.session.userId, req.params.groupName);
       await GroupCollection.changeName(group._id, req.body.new_name);
+      group = await GroupCollection.findGroupByName(req.session.userId, req.params.groupName);
       res.status(200).json({
         message: 'The group name was successfully changed',
         group: group,
@@ -76,8 +77,9 @@ router.post(
       groupValidator.isValidMember,
     ],
     async (req: Request, res: Response) => {
-      const group = await GroupCollection.findGroupByName(req.session.userId, req.params.groupName);
+      let group = await GroupCollection.findGroupByName(req.session.userId, req.params.groupName);
       await GroupCollection.addMember(group._id, req.params.memberId)
+      group = await GroupCollection.findGroupByName(req.session.userId, req.params.groupName);
       res.status(201).json({
         message: 'Group member succesfully added',
         group: group
@@ -103,8 +105,9 @@ router.post(
       groupValidator.isMemberNotInGroup,
     ],
     async (req: Request, res: Response) => {
-      const group = await GroupCollection.findGroupByName(req.session.userId, req.params.groupName);
+      let group = await GroupCollection.findGroupByName(req.session.userId, req.params.groupName);
       await GroupCollection.removeMember(group._id, req.params.memberId)
+      group = await GroupCollection.findGroupByName(req.session.userId, req.params.groupName);
       res.status(200).json({
         message: 'Group member succesfully removed',
         group: group
