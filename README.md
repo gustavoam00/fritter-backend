@@ -167,6 +167,7 @@ Mongoose allows you to use schema validation if you want to ensure that certain 
 
 within the schema. This tells us that the `content` field must have type `String`, and that it is required for documents in that collection. A freet must have a `String` type value for the `content` field to be added to the freets collection.
 
+---
 
 ## API routes
 
@@ -175,6 +176,8 @@ The following api routes have already been implemented for you (**Make sure to d
 #### `GET /`
 
 This renders the `index.html` file that will be used to interact with the backend
+
+---
 
 #### `GET /api/freets` - Get all the freets
 
@@ -241,6 +244,8 @@ This renders the `index.html` file that will be used to interact with the backen
 - `403` if the user is not the author of the freet
 - `400` if the new freet content is empty or a stream of empty spaces
 - `413` if the new freet content is more than 140 characters long
+
+---
 
 #### `POST /api/users/session` - Sign in user
 
@@ -367,6 +372,8 @@ This renders the `index.html` file that will be used to interact with the backen
 - `403` if the user is not the author of the vote
 - `404` if the vote id is invalid
 
+---
+
 #### `GET /api/reactions/:freetId` - Get reactions by freet
 
 **Returns**
@@ -405,6 +412,8 @@ This renders the `index.html` file that will be used to interact with the backen
 - `403` if the user is not logged in
 - `403` if the user is not the author of the reaction
 - `404` if the reactionId not a valid reaction _id
+
+---
 
 #### `GET /api/groups` - Get groups of user
 
@@ -477,6 +486,8 @@ This renders the `index.html` file that will be used to interact with the backen
 - `403` if user is not logged in
 - `404` if the groupName not a valif name for a group owned by logged in user
 - `404` if memberId not in group
+
+---
 
 #### `POST /api/anon/session` - Change to Anonymous mode
 
